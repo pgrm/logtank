@@ -1,0 +1,3 @@
+[submodule "client/assets/themes/material"]
+	path = client/assets/themes/material
+	url = git@github.com:logTank/material.git
