@@ -56,7 +56,7 @@ gulp.task('client', ['styles', 'images', 'html', 'scripts-ts', 'scripts-js', 'bo
 gulp.task('styles', ['sass-styles', 'fonts'], function() { });
 
 gulp.task('sass-styles', ['angular-material-scss'], function() {
-  gulp.src('./client/app/app.scss')
+  gulp.src(['./client/assets/themes/default.scss', './client/app/website.scss', './client/tank/app/tank.scss'])
     .pipe(sourcemaps.init())
     .pipe(sass()).pipe(gulpif(!development, csso()))
     .pipe(gulpif(development, sourcemaps.write('./maps')))
