@@ -11,3 +11,6 @@
 /// <reference path="passport/passport.d.ts" />
 /// <reference path="express-session/express-session.d.ts" />
 /// <reference path="csurf/csurf.d.ts" />
+/// <reference path="jsonwebtoken/jsonwebtoken.d.ts" />
+/// <reference path="express-jwt/express-jwt.d.ts" />
+/// <reference path="express-unless/express-unless.d.ts" />

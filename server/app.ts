@@ -6,6 +6,7 @@ import config = require('./config/environment/index');
 import http = require("http");
 import expressConfig = require('./config/express');
 import seed = require("./config/seed");
+import routes = require("./routes");
 
 /**
  * Main application file
@@ -25,7 +26,7 @@ if(config.seedDB) {
 // Setup server
 var app = express();
 expressConfig.initialize(app);
-require('./routes')(app);
+routes.InitializeRoutes(app);
 
 // Start server
 app.listen(config.port, config.ip, function () {

@@ -1,14 +1,17 @@
-var passport = require('passport');
+import passport = require('passport');
+import userM = require('../../api/user/user.model');
+import config = require("../../config/environment/index");
+
 var FacebookStrategy = require('passport-facebook').Strategy;
 
-exports.setup = function (User, config) {
+export function setup() {
   passport.use(new FacebookStrategy({
       clientID: config.facebook.clientID,
       clientSecret: config.facebook.clientSecret,
       callbackURL: config.facebook.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      User.findOne({
+      userM.Model.findOne({
         'facebook.id': profile.id
       },
       function(err, user) {
@@ -16,7 +19,7 @@ exports.setup = function (User, config) {
           return done(err);
         }
         if (!user) {
-          user = new User({
+          user = new userM.Model({
             name: profile.displayName,
             email: profile.emails[0].value,
             role: 'user',

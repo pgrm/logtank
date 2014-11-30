@@ -1,11 +1,11 @@
 export interface IThing {
-  name: String;
-  info: String;
+  name: string;
+  info: string;
   active?: boolean;
 }
 
 export interface IUser {
-  name: String;
-  email: String;
-  role: String;
+  name: string;
+  email: string;
+  role: string;
 }

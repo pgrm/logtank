@@ -7,8 +7,6 @@
  * DELETE  /things/:id          ->  destroy
  */
 
-'use strict';
-
 import express = require("express");
 import _ = require('lodash');
 import thing = require('./thing.model');

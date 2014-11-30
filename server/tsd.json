@@ -43,6 +43,15 @@
     },
     "csurf/csurf.d.ts": {
       "commit": "16fc1fb8b440e55e88bd1bbb393dcf2e9fb07d22"
+    },
+    "jsonwebtoken/jsonwebtoken.d.ts": {
+      "commit": "16fc1fb8b440e55e88bd1bbb393dcf2e9fb07d22"
+    },
+    "express-jwt/express-jwt.d.ts": {
+      "commit": "16fc1fb8b440e55e88bd1bbb393dcf2e9fb07d22"
+    },
+    "express-unless/express-unless.d.ts": {
+      "commit": "16fc1fb8b440e55e88bd1bbb393dcf2e9fb07d22"
     }
   }
 }

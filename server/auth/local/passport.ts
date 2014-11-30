@@ -1,13 +1,15 @@
-var passport = require('passport');
+import passport = require('passport');
+import user = require('../../api/user/user.model');
+
 var LocalStrategy = require('passport-local').Strategy;
 
-exports.setup = function (User, config) {
+export function setup() {
   passport.use(new LocalStrategy({
       usernameField: 'email',
       passwordField: 'password' // this is the virtual field on the model
     },
     function(email, password, done) {
-      User.findOne({
+      user.Model.findOne({
         email: email.toLowerCase()
       }, function(err, user) {
         if (err) return done(err);
@@ -20,6 +22,5 @@ exports.setup = function (User, config) {
         }
         return done(null, user);
       });
-    }
-  ));
-};
+    }));
+}

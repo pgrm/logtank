@@ -6,9 +6,20 @@ var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 export interface IUserMethods {
-  authenticate: (plainTextPassword: String) => boolean;
-  makeSalt: () => String;
-  encryptPassword: (password: String) => String;
+  authenticate: (plainTextPassword: string) => boolean;
+  makeSalt: () => string;
+  encryptPassword: (password: string) => string;
+}
+
+export interface IUserVirtual {
+  password: string;
+  profile: {name: string; role: string};
+  token: {_id: string; role: string};
+}
+
+export var VirtualColumns = {
+  profile: "name role",
+  token: "role"
 }
 
 var UserSchema = new M_ext.CustomSchema<IUserMethods>({
@@ -135,7 +146,7 @@ UserSchema.methods = {
    * @api public
    */
   makeSalt: function() {
-    return <String>crypto.randomBytes(16).toString('base64');
+    return <string>crypto.randomBytes(16).toString('base64');
   },
 
   /**
@@ -148,15 +159,14 @@ UserSchema.methods = {
   encryptPassword: function(password) {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
-    return <String>crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+    return <string>crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
   }
 };
 
-export interface IUser extends M.Document {
-  methods: IUserMethods;
-  hashedPassword: String;
-  provider: String;
-  salt: String;
+export interface IUser extends commonModels.IUser, IUserMethods, IUserVirtual, M.Document {
+  hashedPassword: string;
+  provider: string;
+  salt: string;
   facebook: {};
   twitter: {};
   google: {};
