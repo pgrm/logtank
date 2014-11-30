@@ -1,7 +1,9 @@
-'use strict';
+import path = require("path");
+import _ = require("lodash");
 
-var path = require('path');
-var _ = require('lodash');
+import development = require("./development");
+import production = require("./production");
+import test = require("./test");
 
 function requiredProcessEnv(name) {
   if(!process.env[name]) {
@@ -12,14 +14,17 @@ function requiredProcessEnv(name) {
 
 // All configurations will extend these options
 // ============================================
-var all = {
-  env: process.env.NODE_ENV,
+export var all = {
+  env: <string>process.env.NODE_ENV,
 
   // Root path of server
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 9000,
+  port: <number>process.env.PORT || 9000,
+
+  // Server ip
+  ip: <string>undefined,
 
   // Should we populate the DB with sample data?
   seedDB: false,
@@ -38,7 +43,8 @@ var all = {
       db: {
         safe: true
       }
-    }
+    },
+    uri: <string>null
   },
 
   facebook: {
@@ -60,8 +66,28 @@ var all = {
   }
 };
 
+switch (all.env) {
+  case "development":
+    development.initEnvironment(all);
+    break;
+  case "production":
+    production.initEnvironment(all);
+    break;
+  case "test":
+    test.initEnvironment(all);
+    break;
+}
+
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(
-  all,
-  require('./' + process.env.NODE_ENV + '.js') || {});
+export var env = all.env;
+export var root = all.root;
+export var port = all.port;
+export var ip = all.ip;
+export var seedDB = all.seedDB;
+export var secrets = all.secrets;
+export var userRoles = all.userRoles;
+export var mongo = all.mongo;
+export var facebook = all.facebook;
+export var twitter = all.twitter;
+export var google = all.google;

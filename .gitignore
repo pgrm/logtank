@@ -5,4 +5,7 @@ public
 .idea
 client/bower_components
 dist
+private
+public
 /server/config/local.env.js
+.sublimets

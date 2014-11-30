@@ -137,7 +137,7 @@ gulp.task('scripts-js', function() {
 });
 
 gulp.task('server', function() {
-  spawn('tsc', ['app.ts', '--module', 'commonjs', '--outDir', './private', '--target', 'ES5', '--watch'], {stdio: ['ignore', process.stdout, process.stderr]});
+  spawn('tsc', ['server/app.ts', '--module', 'commonjs', '--outDir', './private', '--target', 'ES5', '--watch'], {stdio: ['ignore', process.stdout, process.stderr]});
 });
 
 gulp.task('debug', function() {
