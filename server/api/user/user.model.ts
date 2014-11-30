@@ -1,11 +1,17 @@
-'use strict';
+import M = require('mongoose');
+import M_ext = require('../../libs/mongoose.ext');
+import commonModels = require("../../../libs/models");
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
-var UserSchema = new Schema({
+export interface IUserMethods {
+  authenticate: (plainTextPassword: String) => boolean;
+  makeSalt: () => String;
+  encryptPassword: (password: String) => String;
+}
+
+var UserSchema = new M_ext.CustomSchema<IUserMethods>({
   name: String,
   email: { type: String, lowercase: true },
   role: {
@@ -129,7 +135,7 @@ UserSchema.methods = {
    * @api public
    */
   makeSalt: function() {
-    return crypto.randomBytes(16).toString('base64');
+    return <String>crypto.randomBytes(16).toString('base64');
   },
 
   /**
@@ -142,8 +148,19 @@ UserSchema.methods = {
   encryptPassword: function(password) {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
-    return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+    return <String>crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
   }
 };
 
-module.exports = mongoose.model('User', UserSchema);
+export interface IUser extends M.Document {
+  methods: IUserMethods;
+  hashedPassword: String;
+  provider: String;
+  salt: String;
+  facebook: {};
+  twitter: {};
+  google: {};
+  github: {};
+}
+
+export var Model = M.model<IUser>('User', UserSchema);

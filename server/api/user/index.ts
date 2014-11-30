@@ -1,9 +1,7 @@
-'use strict';
-
-var express = require('express');
-var controller = require('./user.controller');
-var config = require('../../config/environment');
-var auth = require('../../auth/auth.service');
+import express = require('express');
+import controller = require('./user.controller');
+import config = require('../../config/environment/index');
+import auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
@@ -14,4 +12,4 @@ router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);
 
-module.exports = router;
+export = router;

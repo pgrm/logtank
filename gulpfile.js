@@ -141,8 +141,14 @@ gulp.task('server', function() {
 });
 
 gulp.task('debug', function() {
-  nodemon({script: './private/app.js', ext: 'js', watch: ['./private', './node_modules'], delay: 10})
-    .on('restart', function() {console.log('server restarted')});
+  nodemon({
+        script: './private/app.js', 
+        ext: 'js', 
+        watch: ['./private', './node_modules'], 
+        delay: 10,
+        env: require('./server/config/local.env') || {}
+    })
+    .on('restart', function() { console.log('server restarted'); });
 });
 
 gulp.task('watch', function() {

@@ -5,6 +5,7 @@ import mongoose = require("mongoose");
 import config = require('./config/environment/index');
 import http = require("http");
 import expressConfig = require('./config/express');
+import seed = require("./config/seed");
 
 /**
  * Main application file
@@ -17,7 +18,9 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 // Populate DB with sample data
-if(config.seedDB) { require('./config/seed'); }
+if(config.seedDB) { 
+    seed.StartSeeding();
+}
 
 // Setup server
 var app = express();
