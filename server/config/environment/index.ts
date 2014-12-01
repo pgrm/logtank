@@ -1,5 +1,6 @@
 import path = require("path");
-import _ = require("lodash");
+import M = require("mongoose");
+
 
 import development = require("./development");
 import production = require("./production");
@@ -39,12 +40,12 @@ export var all = {
 
   // MongoDB connection options
   mongo: {
-    options: {
-      db: {
-        safe: true
-      }
+    options: <M.ConnectionOption>{
+      db: { safe: true },
+      user: <string>process.env.LT_MONGO_USERNAME || undefined,
+      pass: <string>process.env.LT_MONGO_PASSWORD || undefined
     },
-    uri: <string>null
+    uri: <string>process.env.LT_MONGO_URL || undefined,
   },
 
   facebook: {
