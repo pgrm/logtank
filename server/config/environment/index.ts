@@ -19,7 +19,7 @@ export var all = {
   env: <string>process.env.NODE_ENV,
 
   // Root path of server
-  root: path.normalize(__dirname + '/../../..'),
+  root: path.normalize(__dirname + '/../../../..'),
 
   // Server port
   port: <number>process.env.PORT || 9000,
@@ -42,6 +42,8 @@ export var all = {
   mongo: {
     options: <M.ConnectionOption>{
       db: { safe: true },
+      server: { socketOptions: { keepAlive: 1 } },
+      replset: { socketOptions: { keepAlive: 1 } },
       user: <string>process.env.LT_MONGO_USERNAME || undefined,
       pass: <string>process.env.LT_MONGO_PASSWORD || undefined
     },

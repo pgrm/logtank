@@ -6,9 +6,9 @@ var spawn = require('child_process').spawn;
 var g = require('gulp-load-plugins')();
 var client = require('./gulpfile.client');
 
-var dest = './dest/';
+var dest = './build/';
 var development = true;
-var tsServer = g.typescript.createProject({target: 'ES5', declarationFiles: false, noExternalResolve: true});
+var tsServer = g.typescript.createProject({target: 'ES5', declarationFiles: false, noExternalResolve: false});
 
 function handleError(error) {
   console.error(Date.now.toString() + "\t" + error.toString());
@@ -39,14 +39,23 @@ gulp.task('init-node', function(cb) {
 });
 
 gulp.task('server', function() {
-  spawn('tsc', ['server/app.ts', '--module', 'commonjs', '--outDir', './private', '--target', 'ES5', '--watch'], {stdio: ['ignore', process.stdout, process.stderr]});
+  spawn('tsc', ['server/app.ts', '--module', 'commonjs', '--outDir', dest + 'private', '--target', 'ES5', '--watch'], {stdio: 'inherit'});
 });
 
-gulp.task('debug', function() {
+gulp.task('server-test', ['compile-server-test'], function() {
+  // gulp.src(dest + 'private/**/*spec.js', {read: false}).pipe(g.mocha({timeout: 60000}));
+});
+
+gulp.task('compile-server-test', function() {
+  // gulp.src(['./server/**/*spec.ts', './server/typings/tsd.d.ts']).pipe(g.typescript(tsServer)).pipe(gulp.dest(dest + './private/server'));
+  // gulp.src(['./libs/**/*spec.ts']).pipe(g.typescript(tsServer)).pipe(gulp.dest(dest + './private/libs'));
+});
+
+gulp.task('debug', ['server-test'], function() {
   g.nodemon({
-        script: './private/app.js', 
+        script: dest + 'private/server/app.js', 
         ext: 'js', 
-        watch: ['./private', './node_modules'], 
+        watch: [dest + 'private'], 
         delay: 10,
         env: require('./server/config/local.env') || {}
     })
@@ -56,14 +65,11 @@ gulp.task('debug', function() {
 gulp.task('watch', function() {
   g.livereload.listen();
 
-  gulp.watch('./client/styles/sass/**/*.sass', ['sass-styles']);
-  gulp.watch('./client/styles/fonts/**/*', ['fonts']);
-  gulp.watch('./client/html/**/*.html', ['html']);
-  gulp.watch('./client/images/**/*', ['images']);
-  gulp.watch('./client/jslibs/**/*.js', ['scripts-js']);
-  gulp.watch('./client/scripts/**/*.ts', ['scripts-ts']);
-  gulp.watch(['./libs/**/*.ts', './typings/**/*.ts'], ['scripts-ts']);
-  gulp.watch('./bower_components/**/*', ['bower']);
+  gulp.watch(['./client/**/*.scss', '!./client/assets/themes/material/**/*'], ['styles']);
+  gulp.watch(['./client/**/*.html', '!./client/assets/themes/material/**/*'], ['html']);
+  gulp.watch('./client/assets/images/**/*', ['images']);
+  gulp.watch('./client/assets/jslibs/**/*.js', ['client-deploy-js']);
+  gulp.watch('./client/**/*.ts', ['client-deploy-ts']);
 
-  gulp.watch('./public/**/*').on('change', g.livereload.changed);
+  gulp.watch(dest + 'public/**/*', ['server-test']).on('change', g.livereload.changed);
 });

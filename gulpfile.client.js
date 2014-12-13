@@ -4,7 +4,8 @@ var gulp = require('gulp');
 var g = require('gulp-load-plugins')();
 var mainBowerFiles = require('main-bower-files');
 
-var opts = {dest: './dest/', development: true};
+var dest = './build/';
+var opts = { development: true};
 var tsClient = g.typescript.createProject({target: 'ES5', declarationFiles: false, noExternalResolve: true, sortOutput: true});
 
 module.exports = function(options) { opts = options; }
@@ -22,7 +23,7 @@ gulp.task('styles', ['angular-material'], function() {
     .pipe(g.sourcemaps.init())
     .pipe(g.sass()).pipe(g.if(!opts.development, g.csso()))
     .pipe(g.if(opts.development, g.sourcemaps.write('./maps')))
-    .pipe(gulp.dest(opts.dest + 'public/css'))
+    .pipe(gulp.dest(dest + 'public/css'))
     .on('error', handleError);
 });
 
@@ -44,34 +45,29 @@ gulp.task('angular-material', function() {
 });
 
 gulp.task('images', function() {
+  gulp.src('./client/assets/images/favicon.ico')
+    .pipe(g.if(!opts.development, g.imagemin({progressive: true, interlaced: true, optimizationLevel: 7})))
+    .pipe(gulp.dest(dest + 'public'));
   gulp.src('./client/assets/images/**/*')
     .pipe(g.if(!opts.development, g.imagemin({progressive: true, interlaced: true, optimizationLevel: 7})))
-    .pipe(gulp.dest(opts.dest + 'public/images'));
+    .pipe(gulp.dest(dest + 'public/images'));
 });
 
 gulp.task('html', function() {
   gulp.src(['./client/**/*.html', '!./client/assets/themes/material/**/*'])
     .pipe(g.if(opts.development, g.embedlr()))
     .pipe(g.angularHtmlify()).pipe(g.htmlmin({removeComments: true, collapseWhitespace: true}))
-    .pipe(gulp.dest(opts.dest + 'public'));
+    .pipe(gulp.dest(dest + 'public'));
 });
 
-gulp.task('client-scripts', ['client-test', 'client-deploy-ts', 'client-deploy-js'], function() {});
+gulp.task('client-scripts', ['client-deploy-ts', 'client-deploy-js'], function() {});
 
-gulp.task('client-test', function() {
-  // gulp.src(['./client/app/**/*.ts', './client/components/**/*.ts', './libs/**/*.ts'])
-  //   .pipe(g.karma({
-  //     configFile: 'karma.conf.js',
-  //     action: 'watch'
-  //   }))//.on('error', handleError);
-});
-
-gulp.task('client-deploy-ts', function() {
+gulp.task('client-deploy-ts', ['client-test'], function() {
   gulp.src(['./client/app/**/*.ts', './client/components/**/*.ts', './libs/**/*.ts', './client/typings/**/*.ts', '!./**/*.spec.ts', '!./**/*.mock.ts'])
     .pipe(g.sourcemaps.init())
     .pipe(g.typescript(tsClient)).pipe(g.concat('app.js')).pipe(g.uglify())
     .pipe(g.if(opts.development, g.sourcemaps.write('./maps')))
-    .pipe(gulp.dest(opts.dest + 'public/scripts'));
+    .pipe(gulp.dest(dest + 'public/scripts'));
 });
 
 gulp.task('client-deploy-js', function() {
@@ -79,7 +75,15 @@ gulp.task('client-deploy-js', function() {
     .pipe(g.sourcemaps.init())
     .pipe(g.concat('libs.js')).pipe(g.uglify())
     .pipe(g.if(opts.development, g.sourcemaps.write('./maps')))
-    .pipe(gulp.dest(opts.dest + 'public/scripts'));
+    .pipe(gulp.dest(dest + 'public/scripts'));
+});
+
+gulp.task('client-test', function() {
+  // gulp.src(['./client/app/**/*.ts', './client/components/**/*.ts', './libs/**/*.ts'])
+  //   .pipe(g.karma({
+  //     configFile: 'karma.conf.js',
+  //     action: 'watch'
+  //   }))//.on('error', handleError);
 });
 
 gulp.task('bower', function() {
@@ -91,14 +95,14 @@ gulp.task('bower', function() {
     .pipe(g.sourcemaps.init())
     .pipe(g.concat('includes.css')).pipe(g.if(!opts.development, g.csso()))
     .pipe(g.if(opts.development, g.sourcemaps.write('./maps')))
-    .pipe(gulp.dest(opts.dest + 'public/css'));
+    .pipe(gulp.dest(dest + 'public/css'));
 
   gulp.src(mainBowerFiles({filter: fontsFilter}))
-    .pipe(gulp.dest(opts.dest + 'public/fonts'));
+    .pipe(gulp.dest(dest + 'public/fonts'));
 
   gulp.src(mainBowerFiles({filter: jsFilter}))
     .pipe(g.sourcemaps.init())
     .pipe(g.concat('includes.js')).pipe(g.uglify())
     .pipe(g.if(opts.development, g.sourcemaps.write('./maps')))
-    .pipe(gulp.dest(opts.dest + 'public/scripts'));
+    .pipe(gulp.dest(dest + 'public/scripts'));
 });

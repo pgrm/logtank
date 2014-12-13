@@ -1,3 +1,5 @@
+/// <reference path="../../typings/tsd.d.ts" />
+
 import should = require('should');
 import app = require('../../app');
 import userModel = require('./user.model');
