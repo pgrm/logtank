@@ -1,9 +1,8 @@
-'use strict';
+import should = require('should');
+import app = require('../../app');
+import userModel = require('./user.model');
 
-var should = require('should');
-var app = require('../../app');
-var User = require('./user.model');
-
+var User = userModel.Model;
 var user = new User({
   provider: 'local',
   name: 'Fake User',
@@ -12,15 +11,15 @@ var user = new User({
 });
 
 describe('User Model', function() {
-  before(function(done) {
+  beforeEach(function(done) {
     // Clear users before testing
-    User.remove().exec().then(function() {
+    User.remove({}).exec().then(function() {
       done();
     });
   });
 
   afterEach(function(done) {
-    User.remove().exec().then(function() {
+    User.remove({}).exec().then(function() {
       done();
     });
   });
@@ -42,7 +41,7 @@ describe('User Model', function() {
     });
   });
 
-  it('should fail when saving without an email', function(done) {
+  it('should fail when saving without an Email', function(done) {
     user.email = '';
     user.save(function(err) {
       should.exist(err);

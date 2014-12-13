@@ -1,8 +1,6 @@
-'use strict';
-
-var should = require('should');
-var app = require('../../app');
-var request = require('supertest');
+import should = require('should');
+import app = require('../../app');
+import request = require('supertest');
 
 describe('GET /api/things', function() {
 
@@ -12,7 +10,8 @@ describe('GET /api/things', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
-        if (err) return done(err);
+        should.not.exist(err)
+        expect(err).toBeNull();
         res.body.should.be.instanceof(Array);
         done();
       });

@@ -52,6 +52,21 @@
     },
     "express-unless/express-unless.d.ts": {
       "commit": "16fc1fb8b440e55e88bd1bbb393dcf2e9fb07d22"
+    },
+    "should/should.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "supertest/supertest.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "karma-jasmine/karma-jasmine.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "jasmine/jasmine.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "superagent/superagent.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
     }
   }
 }
