@@ -28,6 +28,9 @@
     },
     "karma-jasmine/karma-jasmine.d.ts": {
       "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "angularjs/angular-resource.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
     }
   }
 }

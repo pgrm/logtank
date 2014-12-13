@@ -19,30 +19,30 @@ module.exports = function(config) {
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-route/angular-route.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
-      'client/app/app.js',
-      'client/app/app.coffee',
-      'client/app/**/*.js',
-      'client/app/**/*.coffee',
-      'client/components/**/*.js',
-      'client/components/**/*.coffee',
-      'client/app/**/*.jade',
-      'client/components/**/*.jade',
-      'client/app/**/*.html',
-      'client/components/**/*.html'
+      'client/**/*',
+      'libs/**/*.ts',
+      '!client/assets/themes/material/**/*'
     ],
 
     preprocessors: {
-      '**/*.jade': 'ng-jade2js',
       '**/*.html': 'html2js',
-      '**/*.coffee': 'coffee',
+      '**/*.ts': ['typescript']
     },
 
-    ngHtml2JsPreprocessor: {
-      stripPrefix: 'client/'
-    },
-
-    ngJade2JsPreprocessor: {
-      stripPrefix: 'client/'
+    typescriptPreprocessor: {
+      // options passed to the typescript compiler
+      options: {
+        sourceMap: true, // (optional) Generates corresponding .map file.
+        target: 'ES5', // (optional) Specify ECMAScript target version: 'ES3' (default), or 'ES5'
+        module: 'commonjs', // (optional) Specify module code generation: 'commonjs' or 'amd'
+        noImplicitAny: true, // (optional) Warn on expressions and declarations with an implied 'any' type.
+        noResolve: true, // (optional) Skip resolution and preprocessing.
+        removeComments: true // (optional) Do not emit comments to output.
+      },
+      // transforming the filenames
+      transformPath: function(path) {
+        return path.replace(/\.ts$/, '.js');
+      }
     },
 
     // list of files / patterns to exclude
@@ -57,7 +57,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:

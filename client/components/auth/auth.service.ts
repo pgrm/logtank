@@ -1,8 +1,7 @@
-'use strict';
-
 angular.module('logtankApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
-    var currentUser = {};
+  .factory('Auth', function Auth($location: ng.ILocationService, $rootScope: ng.IScope, $http: ng.IHttpService, 
+      User, $cookieStore: ng.cookies.ICookieStoreService, $q: ng.IQService) {
+    var currentUser: any = {};
     if($cookieStore.get('token')) {
       currentUser = User.get();
     }
@@ -24,7 +23,7 @@ angular.module('logtankApp')
           email: user.email,
           password: user.password
         }).
-        success(function(data) {
+        success(function(data: any) {
           $cookieStore.put('token', data.token);
           currentUser = User.get();
           deferred.resolve(data);

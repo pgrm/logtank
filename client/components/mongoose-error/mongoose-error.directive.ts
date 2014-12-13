@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Removes server error when user updates input
  */
@@ -8,7 +6,7 @@ angular.module('logtankApp')
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function(scope, element, attrs, ngModel) {
+      link: function(scope: ng.IScope, element: JQuery, attrs, ngModel) {
         element.on('keydown', function() {
           return ngModel.$setValidity('mongoose', true);
         });
