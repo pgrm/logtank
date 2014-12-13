@@ -1,0 +1,33 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "angularjs/angular.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "angularjs/angular-cookies.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "angularjs/angular-route.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "angularjs/angular-mocks.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "jasmine/jasmine.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "karma-jasmine/karma-jasmine.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    }
+  }
+}

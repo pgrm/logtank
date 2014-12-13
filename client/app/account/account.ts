@@ -1,7 +1,5 @@
-'use strict';
-
 angular.module('logtankApp')
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider: ng.route.IRouteProvider) {
     $routeProvider
       .when('/login', {
         templateUrl: 'app/account/login/login.html',

@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('logtankApp', [
   'ngCookies',
   'ngResource',
@@ -28,7 +26,7 @@ angular.module('logtankApp', [
       },
 
       // Intercept 401s and redirect you to login
-      responseError: function(response) {
+      responseError: function(response: {status: number}) {
         if(response.status === 401) {
           $location.path('/login');
           // remove any stale tokens

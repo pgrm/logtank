@@ -1,12 +1,11 @@
-'use strict';
-
 angular.module('website', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ngRoute'
 ])
-  .config(function ($routeProvider, $locationProvider, $httpProvider) {
+  .config(function ($routeProvider: ng.route.IRouteProvider, 
+      $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider) {
     $routeProvider
       .otherwise({
         redirectTo: '/'
@@ -16,10 +15,11 @@ angular.module('website', [
     $httpProvider.interceptors.push('authInterceptor');
   })
 
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+  .factory('authInterceptor', function ($rootScope: ng.IScope, $q: ng.IQService, 
+      $cookieStore: ng.cookies.ICookieStoreService, $location: ng.ILocationService) {
     return {
       // Add authorization token to headers
-      request: function (config) {
+      request: function (config: {headers: {Authorization?: string}}) {
         config.headers = config.headers || {};
         if ($cookieStore.get('token')) {
           config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
@@ -28,7 +28,7 @@ angular.module('website', [
       },
 
       // Intercept 401s and redirect you to login
-      responseError: function(response) {
+      responseError: function(response: {status: number}) {
         if(response.status === 401) {
           $location.path('/login');
           // remove any stale tokens
@@ -42,7 +42,7 @@ angular.module('website', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope: ng.IScope, $location: ng.ILocationService, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$routeChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {

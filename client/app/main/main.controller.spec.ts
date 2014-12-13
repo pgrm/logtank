@@ -1,4 +1,4 @@
-'use strict';
+///<reference path="../tsd.d.ts" />
 
 describe('Controller: MainCtrl', function () {
 

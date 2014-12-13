@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('logtankApp')
   .controller('MainCtrl', function ($scope, $http) {
     $scope.awesomeThings = [];

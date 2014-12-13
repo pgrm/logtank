@@ -59,13 +59,16 @@
     "supertest/supertest.d.ts": {
       "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
     },
-    "karma-jasmine/karma-jasmine.d.ts": {
+    "superagent/superagent.d.ts": {
+      "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
+    },
+    "mocha/mocha.d.ts": {
       "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
     },
     "jasmine/jasmine.d.ts": {
       "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
     },
-    "superagent/superagent.d.ts": {
+    "karma-jasmine/karma-jasmine.d.ts": {
       "commit": "017cb72c292ba24e70afad99c12bc04778b7261c"
     }
   }

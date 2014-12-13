@@ -13,7 +13,8 @@ import passport = require('passport');
 import session = require('express-session');
 import mongoose = require('mongoose');
 import csrf = require('csurf');
-// import methodOverride = require('method-override');
+import methodOverride = require('method-override');
+
 var favicon = require('serve-favicon');
 var mongoStore = require('connect-mongo')(session);
 var expressPromise = require('express-promise');
@@ -25,7 +26,8 @@ export function initialize(app: express.Application) {
   app.use(express.static(path.join(config.root, 'public')));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  // app.use(methodOverride());
+  app.use(methodOverride('X-HTTP-Method'));
+  app.use(methodOverride('X-HTTP-Method-Override'));
   app.use(cookieParser());
 
   // Persist sessions with mongoStore

@@ -31,6 +31,7 @@
     "del": "^1.0.0",
     "gulp": "^3.8.9",
     "gulp-angular-htmlify": "^1.0.0",
+    "gulp-angular-injector": "^1.0.0",
     "gulp-chug": "^0.3.1",
     "gulp-concat": "^2.4.1",
     "gulp-csso": "^0.2.9",
@@ -70,7 +71,8 @@
   "scripts": {
     "start": "node server/app.js",
     "test": "grunt test",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
+    "postinstall": "cd client/assets/themes/material && npm install"
   },
   "private": true
 }

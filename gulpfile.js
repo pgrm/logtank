@@ -19,6 +19,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var ts = require('gulp-typescript');
 var uglify = require('gulp-uglify');
 
+var dist = './dist/';
 var development = true;
 var tsServer = ts.createProject({target: 'ES5', declarationFiles: false, noExternalResolve: true});
 var tsClient = ts.createProject({target: 'ES5', declarationFiles: false, noExternalResolve: true, sortOutput: true});
@@ -39,7 +40,7 @@ gulp.task('deploy', ['clean', 'init-node', 'init-bower'], function() {
 });
 
 gulp.task('clean', function(cb) {
-  del(['./public'], cb);
+  del([dist], cb);
 });
 
 gulp.task('init-node', function(cb) {
@@ -53,18 +54,17 @@ gulp.task('init-bower', function(cb) {
 });
 
 gulp.task('client', ['styles', 'images', 'html', 'scripts-ts', 'scripts-js', 'bower'], function() { });
-gulp.task('styles', ['sass-styles', 'fonts'], function() { });
 
-gulp.task('sass-styles', ['angular-material-scss'], function() {
+gulp.task('styles', ['angular-material'], function() {
   gulp.src(['./client/assets/themes/default.scss', './client/app/website.scss', './client/tank/app/tank.scss'])
     .pipe(sourcemaps.init())
     .pipe(sass()).pipe(gulpif(!development, csso()))
     .pipe(gulpif(development, sourcemaps.write('./maps')))
-    .pipe(gulp.dest('./public/css'))
+    .pipe(gulp.dest(dest + 'public/css'))
     .on('error', handleError);
 });
 
-gulp.task('angular-material-scss', function() {
+gulp.task('angular-material', function() {
   var stylesBaseDir = './client/assets/themes/';
   var customTheme = stylesBaseDir + 'blue-lime/logtank-theme.scss';
   var materialDesignBaseDir = stylesBaseDir + 'material/dist/';
@@ -81,9 +81,33 @@ gulp.task('angular-material-scss', function() {
     .pipe(gulp.dest(materialDesignBaseDir + 'tmp'));
 });
 
-gulp.task('fonts', function() {
-  gulp.src('./client/styles/fonts/**/*')
-    .pipe(gulp.dest('./public/fonts'));
+gulp.task('images', function() {
+  gulp.src('./client/assets/images/**/*')
+    .pipe(gulpif(!development, imagemin({progressive: true, interlaced: true, optimizationLevel: 7})))
+    .pipe(gulp.dest(dest + 'public/images'));
+});
+
+gulp.task('html', function() {
+  gulp.src(['./client/**/*.html'])
+    .pipe(gulpif(development, embedlr()))
+    .pipe(htmlify()).pipe(htmlmin({removeComments: true, collapseWhitespace: true}))
+    .pipe(gulp.dest(dest + 'public'));
+});
+
+gulp.task('scripts-ts', function() {
+  gulp.src(['./client/app/**/*.ts', './libs/**/*.ts', './typings/**/*.ts'])
+    .pipe(sourcemaps.init())
+    .pipe(ts(tsClient)).pipe(concat('app.js')).pipe(uglify())
+    .pipe(gulpif(development, sourcemaps.write('./maps')))
+    .pipe(gulp.dest(dest + 'public/scripts'));
+});
+
+gulp.task('scripts-js', function() {
+  gulp.src('./client/assets/jslibs/**/*.js')
+    .pipe(sourcemaps.init())
+    .pipe(concat('libs.js')).pipe(uglify())
+    .pipe(gulpif(development, sourcemaps.write('./maps')))
+    .pipe(gulp.dest(dest + 'public/scripts'));
 });
 
 gulp.task('bower', function() {
@@ -95,45 +119,16 @@ gulp.task('bower', function() {
     .pipe(sourcemaps.init())
     .pipe(concat('includes.css')).pipe(gulpif(!development, csso()))
     .pipe(gulpif(development, sourcemaps.write('./maps')))
-    .pipe(gulp.dest('./public/css'));
+    .pipe(gulp.dest(dest + 'public/css'));
 
   gulp.src(mainBowerFiles({filter: fontsFilter}))
-    .pipe(gulp.dest('./public/fonts'));
+    .pipe(gulp.dest(dest + 'public/fonts'));
 
   gulp.src(mainBowerFiles({filter: jsFilter}))
     .pipe(sourcemaps.init())
     .pipe(concat('includes.js')).pipe(uglify())
     .pipe(gulpif(development, sourcemaps.write('./maps')))
-    .pipe(gulp.dest('./public/scripts'));
-});
-
-gulp.task('images', function() {
-  gulp.src('./client/images/**/*')
-    .pipe(gulpif(!development, imagemin({progressive: true, interlaced: true, optimizationLevel: 7})))
-    .pipe(gulp.dest('./public/images'));
-});
-
-gulp.task('html', function() {
-  gulp.src(['./client/html/website/**/*.html', './client/html/**/*.html'])
-    .pipe(gulpif(development, embedlr()))
-    .pipe(htmlify()).pipe(htmlmin({removeComments: true, collapseWhitespace: true}))
-    .pipe(gulp.dest('./public'));
-});
-
-gulp.task('scripts-ts', function() {
-  gulp.src(['./client/scripts/**/*.ts', './libs/**/*.ts', './typings/**/*.ts'])
-    .pipe(sourcemaps.init())
-    .pipe(ts(tsClient)).pipe(concat('app.js')).pipe(uglify())
-    .pipe(gulpif(development, sourcemaps.write('./maps')))
-    .pipe(gulp.dest('public/scripts'));
-});
-
-gulp.task('scripts-js', function() {
-  gulp.src('./client/jslibs/**/*.js')
-    .pipe(sourcemaps.init())
-    .pipe(concat('libs.js')).pipe(uglify())
-    .pipe(gulpif(development, sourcemaps.write('./maps')))
-    .pipe(gulp.dest('public/scripts'));
+    .pipe(gulp.dest(dest + 'public/scripts'));
 });
 
 gulp.task('server', function() {
