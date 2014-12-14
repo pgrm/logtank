@@ -10,11 +10,6 @@ var dest = './build/';
 var development = true;
 var tsServer = g.typescript.createProject({target: 'ES5', declarationFiles: false, noExternalResolve: false});
 
-function handleError(error) {
-  console.error(Date.now.toString() + "\t" + error.toString());
-  this.emit('end');
-}
-
 gulp.task('default', ['init-node'], function() {
   development = true;
   client({dest: dest, development: development});
