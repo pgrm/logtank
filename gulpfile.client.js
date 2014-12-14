@@ -79,7 +79,7 @@ gulp.task('client-deploy-js', function() {
 });
 
 gulp.task('client-test', function() {
-  // gulp.src(['./client/app/**/*.ts', './client/components/**/*.ts', './libs/**/*.ts'])
+  // gulp.src(['./client/app/**/*.ts', './client/components/**/*.ts', './libs/**/*.ts', './client/typings/**/*.ts'])
   //   .pipe(g.karma({
   //     configFile: 'karma.conf.js',
   //     action: 'watch'
